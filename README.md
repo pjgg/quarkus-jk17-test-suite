@@ -1,0 +1,1 @@
+# Quarkus JDK17 Test Suite
