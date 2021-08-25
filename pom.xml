@@ -267,7 +267,7 @@
         </plugins>
     </build>
     <modules>
-        <module>microprofile</module>
+        <module>jaxrs-panache</module>
     </modules>
     <repositories>
         <repository>
