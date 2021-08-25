@@ -26,7 +26,14 @@ public record Fruit(
     }
 
     public static List<Fruit> getAll() {
-        return FruitEntity.<FruitEntity> findAll().stream().map(Fruit::fromEntity).collect(Collectors.toList());
+        return FruitEntity.<FruitEntity> find("#Fruits.findAllCustom")
+                .stream()
+                .map(Fruit::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    public static Fruit getLongestDescription() {
+        return fromEntity(FruitEntity.getLongestDescription());
     }
 
     public void save() {

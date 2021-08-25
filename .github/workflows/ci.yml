@@ -9,10 +9,6 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest ]
-    env:
-      JDK_VERSION: "17"
-      BOOT_JDK_URL: "https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_linux-x64_bin.tar.gz"
-      BOOT_JDK_SHA256: "aef49cc7aa606de2044302e757fa94c8e144818e93487081c4fd319ca858134b"
     steps:
       - uses: sdkman/sdkman-action@master
         id: sdkman
