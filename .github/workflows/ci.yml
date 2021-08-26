@@ -10,17 +10,22 @@ jobs:
       matrix:
         os: [ ubuntu-latest ]
     steps:
-      - uses: sdkman/sdkman-action@master
-        id: sdkman
+      - uses: actions/checkout@v2
+      - run: |
+          download_url="https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_linux-x64_bin.tar.gz"
+          wget -O ~/jdk/java_package.tar.gz $download_url
+      - uses: joschi/setup-jdk@v2
         with:
-          candidate: java
-          version: 17.ea.3.pma-open
-      - uses: actions/setup-java@v1
-        id: setup-java
-        with:
-          java-version: 17.0.0
-          jdkFile: ${{ steps.sdkman.outputs.file }}
+          distribution: 'jdkfile'
+          java-version: '17'
+          architecture: x64
+          jdkFile: ~/jdk/java_package.tar.gz
       - run: java --version
+      - name: Cache jdk17
+        uses: actions/cache@v2
+        with:
+          path: ~/jdk
+          key: 'jdk17'
       - name: Build Quarkus main
         run: |
           git clone https://github.com/quarkusio/quarkus.git && cd quarkus && ./mvnw -B -s .github/mvn-settings.xml clean install -Dquickly
@@ -41,17 +46,19 @@ jobs:
         os: [ ubuntu-latest ]
     needs: [ build-dependencies ]
     steps:
-      - uses: sdkman/sdkman-action@master
-        id: sdkman
+      - name: Cache jdk17
+        id: cache-jdk17
+        uses: actions/cache@v2
         with:
-          candidate: java
-          version: 17.ea.3.pma-open
-      - uses: actions/setup-java@v1
-        id: setup-java
+          path: ~/jdk
+          key: 'jdk17'
+      - uses: joschi/setup-jdk@v2
         with:
-          java-version: 17.0.0
-          jdkFile: ${{ steps.sdkman.outputs.file }}
-      - uses: actions/checkout@v1
+          distribution: 'jdkfile'
+          java-version: '17'
+          architecture: x64
+          jdkFile: ~/jdk/java_package.tar.gz
+      - run: java --version
       - uses: actions/cache@v1
         with:
           path: ~/.m2/repository
@@ -78,17 +85,19 @@ jobs:
         os: [ ubuntu-latest ]
     needs: [ build-dependencies, linux-validate-format ]
     steps:
-      - uses: sdkman/sdkman-action@master
-        id: sdkman
+      - name: Cache jdk17
+        id: cache-jdk17
+        uses: actions/cache@v2
         with:
-          candidate: java
-          version: 17.ea.3.pma-open
-      - uses: actions/setup-java@v1
-        id: setup-java
+          path: ~/jdk
+          key: 'jdk17'
+      - uses: joschi/setup-jdk@v2
         with:
-          java-version: 17.0.0
-          jdkFile: ${{ steps.sdkman.outputs.file }}
-      - uses: actions/checkout@v1
+          distribution: 'jdkfile'
+          java-version: '17'
+          architecture: x64
+          jdkFile: ~/jdk/java_package.tar.gz
+      - run: java --version
       - uses: actions/cache@v1
         with:
           path: ~/.m2/repository
